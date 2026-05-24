@@ -39,7 +39,7 @@ jobs:
           const mineflayer = require('mineflayer')
 
           const bot = mineflayer.createBot({
-            host: '94.249.197.222:11718',
+            host: 'tbg.freezehost.com',
             port: 25565,
             username: 'ServerTBG',
             auth: 'offline'
