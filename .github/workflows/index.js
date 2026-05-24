@@ -1,1 +1,0 @@
-host: 'tbg.freezehost.com'
