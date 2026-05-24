@@ -9,34 +9,58 @@ app.get('/', (req, res) => {
 
 app.listen(process.env.PORT || 3000)
 
-const bot = mineflayer.createBot({
-  host: 'tbg.freezehost.com',
-  port: 25565,
-  username: 'ServerTBG',
-  auth: 'offline'
-})
+function createBot() {
 
-bot.on('spawn', () => {
-  console.log('Bot joined server!')
+  const bot = mineflayer.createBot({
+    host: 'tbg.freezehost.com',
+    port: 25565,
+    username: 'ServerTBG',
+    auth: 'offline',
+    version: '1.20.4'
+  })
 
-  setInterval(() => {
+  bot.on('spawn', () => {
+    console.log('Bot joined server!')
 
-    // Jump
-    bot.setControlState('jump', true)
-
+    // AuthMe login
     setTimeout(() => {
-      bot.setControlState('jump', false)
-    }, 500)
+      bot.chat('/login YOUR_PASSWORD')
+    }, 3000)
 
-    // Random camera movement
-    bot.look(
-      Math.random() * Math.PI * 2,
-      Math.random() * Math.PI / 2,
-      true
-    )
+    // Anti AFK
+    setInterval(() => {
 
-  }, 30000)
-})
+      bot.setControlState('jump', true)
 
-bot.on('error', err => console.log(err))
-bot.on('end', () => console.log('Disconnected'))
+      setTimeout(() => {
+        bot.setControlState('jump', false)
+      }, 1000)
+
+      const directions = ['forward', 'back', 'left', 'right']
+
+      const dir = directions[Math.floor(Math.random() * directions.length)]
+
+      bot.setControlState(dir, true)
+
+      setTimeout(() => {
+        bot.setControlState(dir, false)
+      }, 2000)
+
+      bot.look(
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI / 2,
+        true
+      )
+
+    }, 15000)
+  })
+
+  bot.on('end', () => {
+    console.log('Disconnected. Reconnecting in 10 seconds...')
+    setTimeout(createBot, 10000)
+  })
+
+  bot.on('error', err => console.log(err))
+}
+
+createBot()
