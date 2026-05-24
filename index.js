@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT || 3000)
 
 const bot = mineflayer.createBot({
-  host: 'YOUR_SERVER_IP',
+  host: 'tbg.freezehost.com',
   port: 25565,
   username: 'AFK_Bot',
   auth: 'offline'
